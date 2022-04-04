@@ -40,7 +40,7 @@ export class MainManager {
 
         //this.soundBgm?.pl
         if (this.isStarted) {
-            if (this.getTimeNoTick() > (this.soundHowlDuration ?? 0) + 5) {
+            if (this.getTimeNoTick() >= (this.soundHowlDuration ?? 0) - 1) {
                 this.isStarted = false
                 MainManager.endPlay().catch(x => console.log(x))
             }
@@ -342,10 +342,6 @@ export class MainManager {
 
     async playBgm() {
         this.soundHowlId = this.soundHowl.play();
-
-        console.log(this.soundHowlId)
-        console.log(this.soundHowl.seek(this.soundHowlId))
-
         this.soundHowl.on('play', () => {
             this.soundHowlDuration = this.soundHowl.duration(this.soundHowlId)
             this.isStarted = true;
@@ -371,7 +367,7 @@ export class MainManager {
     }
 
     private static async endPlay() {
-        await CommonUtil.wait(2000)
+        await CommonUtil.wait(5000)
         CommonUtil.mitt.emit('playEnd')
     }
 }
