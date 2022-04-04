@@ -1,4 +1,5 @@
 import {ref} from "vue";
+import {ChartInfo} from "./ChartApi";
 
 type difficulties = "EZ" | "HD" | "IN" | "AT" | "SP"
 
@@ -10,9 +11,15 @@ export class SongListUtil {
         //getCurrentInstance()?.proxy?.$forceUpdate();
     }
 
-    public static data2play: { json?: string, music?: ArrayBuffer } = {
+    public static data2play: {
+        illustration?: string;
+        json?: string, music?: ArrayBuffer;
+        chartInfo?: ChartInfo;
+    } = {
+        illustration: "",
         json: undefined,
-        music: undefined
+        music: undefined,
+        chartInfo: undefined
     }
 
 

@@ -15,7 +15,7 @@ export class HoldActor extends NoteActor {
         this.normalSprite = ResourceManager.Hold.toSprite()
         //this.normalSprite.height /= 5;
         this.normalSprite.width = 197.5;
-        this.normalSprite.height = ((this.noteData.endTick - this.noteData.startTick) * SetManager.tickSpeed);
+        this.normalSprite.height = ((this.noteData.endTick - this.noteData.startTick) * SetManager.tickSpeed());
         //this.normalSprite.height = 50;
     }
 
@@ -48,7 +48,6 @@ export class HoldActor extends NoteActor {
     override onHit() {
         if (this.holding)
             return;
-        console.log("hold" + this.noteData.index + "触发")
         this.hitSound.play(0.6)
         this.holding = true;
 
@@ -67,7 +66,7 @@ export class HoldActor extends NoteActor {
         super.onPreUpdate(_engine, _delta);
 
         if (this.holding && tick <= this.noteData.endTick + 5) {
-            this.normalSprite.height = (this.noteData.endTick - tick) * SetManager.tickSpeed;
+            this.normalSprite.height = (this.noteData.endTick - tick) * SetManager.tickSpeed();
         }
         if (tick >= this.noteData.endTick) {
             this.click?.end();

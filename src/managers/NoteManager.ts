@@ -4,6 +4,7 @@ import {Engine} from "excalibur";
 import {DragActor} from "../actors/DragActor";
 import {FlickActor} from "../actors/FlickActor";
 import {HoldActor} from "../actors/HoldActor";
+import {MainManager} from "./MainManager";
 
 export class NoteActorManager {
 
@@ -12,7 +13,10 @@ export class NoteActorManager {
     dragNotes: DragActor[] = [];
     flickNotes: FlickActor[] = [];
 
+    numOfNotes: number = 0;
+
     addNoteActor(noteActor: NoteActor) {
+        this.numOfNotes++;
         switch (noteActor.noteData.type) {
             case 1:
                 this.tapNotes.push(noteActor as TapActor);
@@ -32,6 +36,10 @@ export class NoteActorManager {
     }
 
 
+    /**
+     * 将内部的Note数据变成Actor于游戏中。
+     * @param engine
+     */
     init(engine: Engine) {
 
         this.tapNotes.forEach(x => {
@@ -49,7 +57,9 @@ export class NoteActorManager {
     }
 
     onNoteComplete(note: NoteActor) {
-        note.kill();
+        note.active = false
+
+        MainManager.Instance.combo.value++;
         //console.log(note.scene.actors.length)
         switch (note.noteData.type) {
             case 1:
@@ -57,11 +67,9 @@ export class NoteActorManager {
                 break;
             case 2:
                 this.holdNotes.splice(this.holdNotes.indexOf(note as HoldActor), 1)
-
                 break;
             case 3:
                 this.dragNotes.splice(this.dragNotes.indexOf(note as DragActor), 1)
-
                 break;
             case 4:
                 this.flickNotes.splice(this.flickNotes.indexOf(note as FlickActor), 1)

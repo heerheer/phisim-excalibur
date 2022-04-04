@@ -1,5 +1,5 @@
 <template>
-  <div v-show="dif===difficulty" class="red"></div>
+  <div v-show="dif===difficulty" class="red" v-bind:style="{'background':getColor()}"></div>
 
   <div class="c" @click="changeDif();">
     <div v-bind:style="{'font-size': '3vw','color':dif===difficulty?'white':'black'}">
@@ -22,11 +22,26 @@ const dif = SongListUtil.difficulty
 const changeDif = () => {
   SongListUtil.set(props.difficulty);
 }
+
+const getColor = () => {
+  switch (props.difficulty) {
+    case "EZ":
+      return 'limegreen'
+    case "HD":
+      return 'dodgerblue'
+    case "IN":
+      return 'red'
+    case "AT":
+      return '#795d5d'
+    case "SP":
+      return 'linear-gradient(blue, slateblue, coral, lightpink)'
+  }
+}
 </script>
 
 <style scoped>
 .red {
-  background: red;
+  background: linear-gradient(blue, slateblue, coral, lightpink);
   width: 90%;
   height: 120%;
   transform: translateY(-10%) translateX(5%);
@@ -44,5 +59,7 @@ const changeDif = () => {
   top: 0;
   width: 100%;
   z-index: 0;
+  height: 100%;
+  transform: skew(15deg);
 }
 </style>

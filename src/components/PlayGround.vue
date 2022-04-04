@@ -12,9 +12,6 @@
   <el-button @click="load">Load</el-button>
   <el-button @click="play" class='success'>Play</el-button>
 
-  <div v-if="MainManager.Instance!==undefined">
-    <div v-if="MainManager.Instance.soundBgm!==undefined">{{ MainManager.Instance.soundBgm.ctx.currentTime }}</div>
-  </div>
   <game-engine-com></game-engine-com>
 </template>
 
@@ -44,7 +41,7 @@ const load = async () => {
 
   let json = JSON.parse((await jsonFile.value?.text())!);
 
-  let chart_raw = json as PhiChart.Chart;
+  let chart_raw = json as RpeChartTypes.Chart;
   console.log(chart_raw)
   MainManager.Instance.loadChart(chart_raw)
   console.log("OK")

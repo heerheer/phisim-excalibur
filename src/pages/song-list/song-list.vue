@@ -30,19 +30,33 @@ const itemSelected = (info: any) => {
 
 const start = async () => {
   let diff = SongListUtil.difficulty.value;
-  SongListUtil.data2play.json = JSON.stringify(await api.value.getChartJson(selectedSong.value?.codename!, diff))
-  console.log("远程json读取完成")
+  if (diff == undefined) {
+    alert("你还没有选择难度。")
+    return;
+  }
+  try {
+    SongListUtil.data2play.chartInfo = selectedSong.value;
+    SongListUtil.data2play.json = JSON.stringify(await api.value.getChartJson(selectedSong.value?.codename!, diff))
+    console.log("远程json读取完成")
 
-  SongListUtil.data2play.music = await api.value.getChartMusicData(selectedSong.value!)
-  console.log("远程音频arrayBuffer读取完成")
+    SongListUtil.data2play.music = await api.value.getChartMusicData(selectedSong.value!)
 
-  router.push({path: '/play'})
+    SongListUtil.data2play.illustration = api.value.getChartIllustrationUrl(selectedSong.value!)
 
-  console.log("跳转/play")
+    console.log("远程音频arrayBuffer读取完成")
+
+    await router.push({path: '/play'})
+  } catch {
+    alert("出现错误!可能是难度选择错误，或者是谱面JSON与音频/图片读取出错。")
+
+  }
 }
 </script>
 
 <template>
+
+
+
   <div v-if="loaded" style="height: 100%;width: 100%;position: fixed;overflow: hidden">
     <div id="backgroundImg" style="height: 100%;width: 100%;">
       <el-image style="height: 100%;width: 100%;filter: blur(8px);"

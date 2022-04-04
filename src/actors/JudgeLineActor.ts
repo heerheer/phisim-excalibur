@@ -13,7 +13,7 @@ export class JudgeLineActor extends Actor {
     judgeLineData: VJudgeLine;
     noteManager: NoteActorManager = new NoteActorManager();
     speed: number = 10;
-    private posActor: Actor;
+    private posActor?: Actor;
 
     constructor(data: VJudgeLine) {
         super({
@@ -23,8 +23,10 @@ export class JudgeLineActor extends Actor {
             pos: vec(0, -750)
         });
         this.judgeLineData = data;
-        this.posActor = new Actor({pos: vec(0, 0), width: 100, height: 20, color: Color.Azure})
-        this.addChild(this.posActor)
+        if (SetManager.drawPosBlock) {
+            this.posActor = new Actor({pos: vec(0, 0), width: 100, height: 20, color: Color.Azure})
+            //this.addChild(this.posActor)
+        }
     }
 
     onInitialize(_engine: Engine) {

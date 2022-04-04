@@ -1,5 +1,5 @@
 //ts2json得到的json文件中对象结构
-declare module PhiChart {
+declare module RpeChartTypes {
 
     export interface BPMList {
         bpm: number;
@@ -75,7 +75,7 @@ declare module PhiChart {
         above: number;
         alpha: number;
         endTime: number[];
-        isFake: number;
+        isFake: boolean;
         positionX: number;
         size: number;
         speed: number;

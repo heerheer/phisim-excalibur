@@ -13,7 +13,7 @@ export abstract class NoteActor extends Actor {
 
     noteData: VNote;
     lineData: VJudgeLine;
-    posActor?: Actor;
+
 
     protected constructor(data: VNote, line: VJudgeLine) {
         super();
@@ -22,17 +22,23 @@ export abstract class NoteActor extends Actor {
         this.lineData = line;
 
 
+        this.graphics.onPostDraw = ctx => {
+            if (SetManager.drawPosBlock) {
+
+                //绘制定位点
+                if (Math.abs(this.transform.pos.y) <= 900 / 2 && Math.abs(this.transform.pos.x) <= 1350 / 2) {
+                    ctx.drawRectangle(vec(0, 0), 20, 20, Color.Rose)
+
+                } else {
+
+                }
+            }
+        }
     }
 
     onInitialize(_engine: Engine) {
         super.onInitialize(_engine);
         this.graphics.use(this.normalSprite)
-        //this.scene.add(this.posActor)
-
-        /*        this.addChild(new Label({
-                    text: `${this.noteData.index.judgeIndex},${this.noteData.index.index}`,
-                    scale: vec(3, 3)
-                }))*/
     }
 
 
@@ -41,26 +47,12 @@ export abstract class NoteActor extends Actor {
         if (!MainManager.Instance.isStarted)
             return;
 
-        if (Math.abs(this.transform.pos.y) <= this.scene.engine.drawHeight && Math.abs(this.transform.pos.x) <= this.scene.engine.drawWidth) {
-            if (this.posActor == undefined) {
-                this.posActor = new Actor({pos: vec(0, 0), width: 20, height: 20, color: Color.Magenta})
-                this.addChild(this.posActor)
-                console.log("added")
 
-            }
-            //this.posActor.pos = this.pos;
-        } else {
-            if (this.posActor) {
-                console.log("removed")
-                this.posActor.kill();
-                this.posActor = undefined;
-            }
-        }
         let tick = this.getTick();
 
         this.drawNote();
 
-        if (this.noteData.startTick + 5 >= tick && this.noteData.startTick <= tick) {
+        if (this.noteData.startTick + SetManager.speedRatio / 15 >= tick && this.noteData.startTick <= tick) {
             this.onHit()
         }
 
@@ -99,7 +91,7 @@ export abstract class NoteActor extends Actor {
     getDistance() {
         let judgeLineActor = MainManager.Instance.judgeLineActors[this.noteData.index.judgeIndex];
         let tick = this.getTick();
-        return (this.noteData.startTick - tick) * SetManager.tickSpeed * (judgeLineActor.speed / 10);
+        return (this.noteData.startTick - tick) * SetManager.tickSpeed() * (judgeLineActor.speed / 10);
     }
 
     /**
@@ -109,11 +101,11 @@ export abstract class NoteActor extends Actor {
         let judgeLineActor = MainManager.Instance.judgeLineActors[this.noteData.index.judgeIndex];
 
         let tick = this.getTick();
-        return ((this.noteData.startTick - tick) <= 0 ? 0 : (this.noteData.startTick - tick)) * SetManager.tickSpeed * (judgeLineActor.speed / 10);
+        return ((this.noteData.startTick - tick) <= 0 ? 0 : (this.noteData.startTick - tick)) * SetManager.tickSpeed() * (judgeLineActor.speed / 10);
     }
 
     getPos(distance: number) {
-        if (distance < -100 || distance >= 3000) {
+        if (distance <= -3000 || distance >= 3000) {
             return;
         }
         let judgeLineActor = MainManager.Instance.judgeLineActors[this.noteData.index.judgeIndex];
@@ -123,7 +115,7 @@ export abstract class NoteActor extends Actor {
         let p_offset_2 = vec(+Math.cos(Math.PI / 2 - r) * distance, -Math.sin(Math.PI / 2 - r) * distance)
         let xoffset = p_offset_1.x + p_offset_2.x;
         let yoffset = p_offset_1.y + p_offset_2.y
-        return vec((judgeLineActor.transform.pos.x + xoffset), judgeLineActor.transform.pos.y + yoffset)
+        return vec(Math.round(judgeLineActor.transform.pos.x + xoffset), Math.round(judgeLineActor.transform.pos.y + yoffset))
     }
 
 
@@ -139,10 +131,12 @@ export abstract class NoteActor extends Actor {
 
         let pos = this.getPos(this.getDistance())
         if (pos) {
-            actor.transform.pos.x = pos.x;
-            actor.transform.pos.y = pos.y;
-            //set rotation
-            actor.transform.rotation = judgeLineActor.transform.rotation;
+            if (Math.abs(pos.y) <= 1500 / 2 && Math.abs(pos.x) <= 2000 / 2) {
+                actor.transform.pos.x = pos.x;
+                actor.transform.pos.y = pos.y;
+                //set rotation
+                actor.transform.rotation = judgeLineActor.transform.rotation;
+            }
         }
     }
 

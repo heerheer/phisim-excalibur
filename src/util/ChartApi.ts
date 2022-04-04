@@ -20,6 +20,7 @@ export interface ChartInfo {
     chartDesigner?: string;
     illustrator?: string;
     sliceAudioStart?: string;
+    formatter?: "official_json"|"rpe_json"|"phi1919810_json";
 }
 
 

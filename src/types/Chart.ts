@@ -1,8 +1,8 @@
-import MoveXEvent = PhiChart.MoveXEvent;
-import RotateEvent = PhiChart.RotateEvent;
-import MoveYEvent = PhiChart.MoveYEvent;
-import AlphaEvent = PhiChart.AlphaEvent;
-import SpeedEvent = PhiChart.SpeedEvent;
+import MoveXEvent = RpeChartTypes.MoveXEvent;
+import RotateEvent = RpeChartTypes.RotateEvent;
+import MoveYEvent = RpeChartTypes.MoveYEvent;
+import AlphaEvent = RpeChartTypes.AlphaEvent;
+import SpeedEvent = RpeChartTypes.SpeedEvent;
 
 
 interface ITickObject {
@@ -14,11 +14,11 @@ export interface VJudgeLineEvent<T> extends ITickObject {
     event: T
 }
 
-export interface VNote extends PhiChart.Note, ITickObject {
+export interface VNote extends RpeChartTypes.Note, ITickObject {
     index: { judgeIndex: number, index: number }
 }
 
-export interface VJudgeLine extends PhiChart.JudgeLine {
+export interface VJudgeLine extends RpeChartTypes.JudgeLine {
     alphaEvents: VJudgeLineEvent<AlphaEvent>[];
     moveXEvents: VJudgeLineEvent<MoveXEvent>[];
     moveYEvents: VJudgeLineEvent<MoveYEvent>[];

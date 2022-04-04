@@ -1,6 +1,6 @@
 import {Note} from "../types/Note";
 import {JudgeLine, JudgeLineEventBase} from "../types/JudgeLine";
-import Chart = PhiChart.Chart;
+import Chart = RpeChartTypes.Chart;
 
 
 /*export function pec2json(pec: string, filename: string) {
